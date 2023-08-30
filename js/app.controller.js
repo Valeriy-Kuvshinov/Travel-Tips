@@ -5,12 +5,14 @@ import { storageService } from './services/storage.service.js'
 window.onload = onInit
 window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
+window.onSearch=onSearch
 window.onGetLocation = onGetLocation
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onGoToUserPos = onGoToUserPos
 window.onGoToLocation = onGoToLocation
 window.onRemoveLocation = onRemoveLocation
+window.onCopyLocation = onCopyLocation
 
 window.url='https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
 
@@ -59,15 +61,14 @@ function onGetUserPos() {
 }
 
 function onGoToLocation(id) {
-    const locations = storageService.load(STORAGE_KEY)
-    mapService.initMap(locations[id - 1].lat, locations[id - 1].lng)
+    mapService.initMap(gLocations[id - 1].lat, gLocations[id - 1].lng)
 }
 
 function onRemoveLocation(id) {
-    const locations = storageService.load(STORAGE_KEY)
-    locations.splice(id - 1, 1)
-    mapService.renderPlaces(locations)
-    storageService.save(STORAGE_KEY, locations)
+    const index=gLocations.findIndex(locId => locId===id)
+    gLocations.splice(index, 1)
+    mapService.renderPlaces(gLocations)
+    storageService.save(STORAGE_KEY, gLocations)
 }
 
 function onGoToUserPos() {
@@ -79,10 +80,23 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917)
 }
 
+function onSearch(){
+    const search=document.getElementById('addressInput').value
+    onGetLocation(search)
+}
+
+function onCopyLocation() {
+    const element = document.getElementById('addressInput');
+    element.select();
+    element.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+}
+
 function onGetLocation(locationName='Israel'){
     const locURL=`https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA`
     axios.get(locURL).then(res => {
         mapService.addLocation(locationName,res.data.results[1].geometry.location.lat,res.data.results[1].geometry.location.lng)
+        mapService.panTo(res.data.results[1].geometry.location.lat,res.data.results[1].geometry.location.lng)
         storageService.save(STORAGE_KEY,gLocations)
     })  
 }

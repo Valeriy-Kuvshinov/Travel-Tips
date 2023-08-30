@@ -4,7 +4,8 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    addLocation
+    addLocation,
+    renderPlaces
 }
 
 // Var that is used throughout this Module (not global)
@@ -45,7 +46,12 @@ function addMarker(loc) {
 function addLocation(name, lat, lng) {
     var location = { id: gLocations.length + 1, name, lat, lng, createdAt: Date.now(), updatedAt: Date.now() }
     gLocations.push(location)
+    renderPlaces(gLocations)
     storageService.save(STORAGE_KEY, gLocations)
+}
+
+function createLocation(name, lat, lng){
+    // return
 }
 
 function renderPlaces(locations) {
