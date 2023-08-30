@@ -134,13 +134,12 @@ function onGetLocation(locationName = 'Israel') {
     })
 }
 
-function updateURLParams(filterBy) {
+function updateURLParams() {
     const currentParams = new URLSearchParams(window.location.search)
-    currentParams.set('searchTerm', filterBy.searchTerm)
-    currentParams.set('minRate', filterBy.minRate)
-    currentParams.set('minPrice', filterBy.minPrice)
-    const lang = currentParams.get('lang')
-    if (lang) currentParams.set('lang', lang)
-    const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${currentParams.toString()}`
-    window.history.pushState({ path: newUrl }, '', newUrl)
+    currentParams.set('lng', gLocations.lng)
+    currentParams.set('lat', gLocations.lat)
+    // const lang = currentParams.get('lang')
+    // if (lang) currentParams.set('lang', lang)
+    // const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${currentParams.toString()}`
+    // window.history.pushState({ path: newUrl }, '', newUrl)
 }

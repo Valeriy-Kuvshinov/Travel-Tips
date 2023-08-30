@@ -44,14 +44,14 @@ function addMarker(loc) {
 }
 
 function addLocation(name, lat, lng) {
-    var location = { id: gLocations.length + 1, name, lat, lng, createdAt: Date.now(), updatedAt: Date.now() }
+    var location = createLocation(name, lat, lng)
     gLocations.push(location)
     renderPlaces(gLocations)
     storageService.save(STORAGE_KEY, gLocations)
 }
 
 function createLocation(name, lat, lng){
-    // return
+    return { id: gLocations.length + 1, name, lat, lng, createdAt: Date.now(), updatedAt: Date.now() }
 }
 
 function renderPlaces(locations) {
@@ -123,7 +123,7 @@ function handleLocationError(err) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = '' //TODO: Enter your API Key
+    // const API_KEY = '' //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script')
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAe86zmZ8GyA3TjyJEVlCdbPyQuyEDEDgU`
     elGoogleApi.async = true
