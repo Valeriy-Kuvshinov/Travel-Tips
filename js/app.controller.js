@@ -52,8 +52,7 @@ function getPosition() {
 }
 
 function onAddMarker() {
-    console.log('Adding a marker')
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 })
+    mapService.addMarker()
 }
 
 function onGetLocs() {
@@ -71,6 +70,7 @@ function onGetUserPos() {
             gMyLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude }
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+            mapService.addMarker('you are here!', pos.coords.latitude, pos.coords.longitude)
         })
         .catch(err => {
             console.log('err!!!', err)
