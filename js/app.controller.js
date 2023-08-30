@@ -101,18 +101,16 @@ function onSearch() {
     onGetLocation(search)
 }
 
-// function onCopyLocation() {
-//     const element = document.getElementById('addressInput')
-//     element.select()
-//     element.setSelectionRange(0, 99999)
-//     document.execCommand('copy')
-// }
 function onCopyLocation() {
-    const lat = gMyLoc.lat
-    const lng = gMyLoc.lng
+    const gMap = mapService.getMap()
+
+    const center = gMap.getCenter()
+    const lat = center.lat()
+    const lng = center.lng()
 
     const url = getShareableLink(lat, lng)
     console.log(lat, lng)
+
     navigator.clipboard.writeText(url).then(() => {
         console.log('Link copied to clipboard')
     }).catch(err => {
