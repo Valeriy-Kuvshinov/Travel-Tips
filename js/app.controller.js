@@ -19,11 +19,28 @@ window.url = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amp
 window.gMyLoc = {}
 
 function onInit() {
-    mapService.initMap()
-        .then(() => {
-            console.log('Map is ready')
-        })
-        .catch(() => console.log('Error: cannot init map'))
+    const urlParams = new URLSearchParams(window.location.search)
+    const lat = parseFloat(urlParams.get('lat'))
+    const lng = parseFloat(urlParams.get('lng'))
+    console.log("Parsed lat and lng from URL: ", lat, lng)
+
+    if (lat && lng) {
+        mapService.initMap(lat, lng)
+            .then(() => {
+                console.log('Map is ready at custom location')
+            })
+            .catch(() => {
+                console.log('Error: cannot init map at custom location')
+            })
+    } else {
+        mapService.initMap()
+            .then(() => {
+                console.log('Map is ready at default location')
+            })
+            .catch(() => {
+                console.log('Error: cannot init map at default location')
+            })
+    }
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -85,10 +102,25 @@ function onSearch() {
 }
 
 function onCopyLocation() {
-    const element = document.getElementById('addressInput');
-    element.select();
-    element.setSelectionRange(0, 99999);
-    document.execCommand('copy');
+    const gMap = mapService.getMap()
+
+    const center = gMap.getCenter()
+    const lat = center.lat()
+    const lng = center.lng()
+
+    const url = getShareableLink(lat, lng)
+    console.log(lat, lng)
+
+    navigator.clipboard.writeText(url).then(() => {
+        console.log('Link copied to clipboard')
+    }).catch(err => {
+        console.log('Failed to copy link: ', err)
+    })
+}
+
+function getShareableLink(lat, lng) {
+    const baseUrl = 'https://valeriy-kuvshinov.github.io/Travel-Tips/'
+    return `${baseUrl}?lat=${lat}&lng=${lng}`
 }
 
 function onGetLocation(locationName = 'Israel') {
