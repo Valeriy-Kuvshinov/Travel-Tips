@@ -142,8 +142,7 @@ body {
 header {
     background-color: #4a99ee;
     color: #1a1919;
-    text-align: center;
-    padding: 15px 0;
+    padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -160,51 +159,95 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.map-buttons, p {
+.map-buttons,
+p {
     padding: 15px;
     margin: 20px 0;
 }
 
-.map-buttons button, button {
+.map-buttons button,
+button {
     margin: 5px;
-    padding: 10px 20px;
+    padding: 10px;
     cursor: pointer;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #92bce9;
+    font-weight: bold;
+    color: #0f0f0f;
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-.map-buttons button:hover, button:hover {
+.map-buttons button:hover {
+    color: #f5f5f5;
     background-color: #0056b3;
 }
-
-.user-pos, .locs {
+.user-pos,
+.locs {
     font-size: 18px;
     color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+table th,
+table td {
+    max-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
 }
 
 table {
     width: 80%;
     margin: auto;
     margin-top: 20px;
-}
-
-th, td {
-    padding: 6px;
-    text-align: center;
-    border: 1px solid #201f1f;
+    border-collapse: collapse;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
+    font-weight: 600;
 }
 
 tr:hover {
-    background-color: #f5f5f5;
+    background-color: #e4d7d7;
+    transition: background-color 0.3s ease;
 }
 
+.go-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.go-button:hover {
+    background-color: #023302;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.x-button {
+    background-color: red;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.x-button:hover {
+    background-color: #8B0000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 footer {
     display: flex;
     justify-content: center;
