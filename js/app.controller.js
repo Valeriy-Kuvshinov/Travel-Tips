@@ -5,11 +5,16 @@ import { storageService } from './services/storage.service.js'
 window.onload = onInit
 window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
+window.onGetLocation = onGetLocation
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onGoToUserPos = onGoToUserPos
 window.onGoToLocation = onGoToLocation
 window.onRemoveLocation = onRemoveLocation
+
+window.url='https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
+
+window.gMyLoc={}
 window.gMyLoc = {}
 
 function onInit() {
@@ -74,7 +79,10 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917)
 }
 
-function updateUserPos(lat, lng) {
-    gMyLoc.lat = lat
-    gMyLoc.lng = lng
+function onGetLocation(locationName='Israel'){
+    const locURL=`https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA`
+    axios.get(locURL).then(res => {
+        mapService.addLocation(locationName,res.data.results[1].geometry.location.lat,res.data.results[1].geometry.location.lng)
+        storageService.save(STORAGE_KEY,gLocations)
+    })  
 }
