@@ -14,6 +14,7 @@ var gLocations=storageService.load(STORAGE_KEY) || []
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap')
+    renderPlaces(gLocations)
     return _connectGoogleApi()
         .then(() => {
             console.log('google available')
@@ -26,9 +27,8 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 const name = prompt('Place name?', 'Place 1')
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
-                console.log(lat, lng)
                 addLocation(name, lat, lng, gMap.getZoom())
-                // renderPlaces()
+                renderPlaces(gLocations)
             })
         })
 }
@@ -43,9 +43,22 @@ function addMarker(loc) {
 }
 
 function addLocation(name,lat,lng){
-    var location={id:1,name,lat,lng,createdAt:Date.now(),updatedAt:Date.now()}
+    var location={id:gLocations.length+1,name,lat,lng,createdAt:Date.now(),updatedAt:Date.now()}
     gLocations.push(location)
     storageService.save(STORAGE_KEY,gLocations)
+}
+
+function renderPlaces(locations){
+    const elLocationsList=document.querySelector('.locs')
+    var strHTML=locations.map(location => {
+        return `<p class="locationId">id:${location.id}</p>
+                <p class="locationName">name:${location.name}</p>
+                <p class="locationPos">lat:${location.lat},lng:${location.lng}</p>
+                <p class="locationUpdateTime">${location.updatedAt}</p>
+                <button onclick="onGoToLocation(${location.id})">Go</button>
+                <button onclick="onRemoveLocation(${location.id})">Remove</button>`
+    })
+    elLocationsList.innerHTML=strHTML
 }
 
 function panTo(lat, lng) {
