@@ -6,15 +6,13 @@ export const mapService = {
     panTo
 }
 
-window.onGoToLocation = onGoToLocation
-window.onRemoveLocation = onRemoveLocation
-
 // Var that is used throughout this Module (not global)
 var gMap
-const STORAGE_KEY = 'locations'
-var gLocations = storageService.load(STORAGE_KEY) || []
+window.STORAGE_KEY = 'locations'
+window.gLocations = storageService.load(STORAGE_KEY) || []
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
+    navigator.geolocation.getCurrentPosition(showLocation, handleLocationError)
     renderPlaces(gLocations)
     return _connectGoogleApi()
         .then(() => {
@@ -87,22 +85,35 @@ function renderPlaces(locations) {
     elLocationsList.innerHTML = strHTML
 }
 
-function onGoToLocation(id){
-    initMap(gLocations[id-1].lat,gLocations[id-1].lng)
-}
-
-function onRemoveLocation(id){
-    gLocations.splice(id-1,1)
-    console.log(gLocations)
-    renderPlaces(gLocations)
-    storageService.save(STORAGE_KEY,gLocations)
-}
 
 function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng)
     gMap.panTo(laLatLng)
 }
 
+function showLocation({coords}) {
+    const { latitude: lat, longitude: lng} = coords
+    if(gMyLoc===undefined){
+        gMyLoc={lat:lat,lng:lng}
+    }
+}
+
+function handleLocationError(err) {
+    var errMsg = ''
+    switch (err.code) {
+        case 1:
+            errMsg = 'The user didn\'t allow this page to retrieve a location.'
+            break
+        case 2:
+            errMsg = 'Unable to determine your location: ' + err.message
+            break
+        case 3:
+            errMsg = 'Timed out before retrieving the location.'
+            break
+    }
+    const elMsg = document.querySelector('.err-msg')
+    elMsg.innerHTML = errMsg
+}
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()

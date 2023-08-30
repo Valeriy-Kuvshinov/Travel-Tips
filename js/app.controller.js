@@ -1,11 +1,17 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+import { storageService } from './services/storage.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
+window.onGoToUserPos = onGoToUserPos
+window.onGoToLocation = onGoToLocation
+window.onRemoveLocation = onRemoveLocation
+
+window.gMyLoc={}
 
 function onInit() {
     mapService.initMap()
@@ -47,7 +53,29 @@ function onGetUserPos() {
             console.log('err!!!', err)
         })
 }
+
+function onGoToLocation(id){
+    const locations=storageService.load(STORAGE_KEY)
+    mapService.initMap(locations[id-1].lat,locations[id-1].lng)
+}
+
+function onRemoveLocation(id){
+    const locations=storageService.load(STORAGE_KEY)
+    locations.splice(id-1,1)
+    mapService.renderPlaces(locations)
+    storageService.save(STORAGE_KEY,locations)
+}
+
+function onGoToUserPos() {
+    mapService.initMap(gMyLoc.lat,gMyLoc.lng)
+}
+
 function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
+}
+
+function updateUserPos(lat,lng){
+   gMyLoc.lat=lat
+   gMyLoc.lng=lng
 }
