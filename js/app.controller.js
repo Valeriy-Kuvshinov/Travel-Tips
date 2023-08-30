@@ -5,7 +5,7 @@ import { storageService } from './services/storage.service.js'
 window.onload = onInit
 window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
-window.onSearch=onSearch
+window.onSearch = onSearch
 window.onGetLocation = onGetLocation
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
@@ -14,9 +14,9 @@ window.onGoToLocation = onGoToLocation
 window.onRemoveLocation = onRemoveLocation
 window.onCopyLocation = onCopyLocation
 
-window.url='https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
+window.url = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
 
-window.gMyLoc={}
+window.gMyLoc = {}
 window.gMyLoc = {}
 
 function onInit() {
@@ -65,7 +65,7 @@ function onGoToLocation(id) {
 }
 
 function onRemoveLocation(id) {
-    const index=gLocations.findIndex(locId => locId===id)
+    const index = gLocations.findIndex(locId => locId === id)
     gLocations.splice(index, 1)
     mapService.renderPlaces(gLocations)
     storageService.save(STORAGE_KEY, gLocations)
@@ -80,8 +80,8 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917)
 }
 
-function onSearch(){
-    const search=document.getElementById('addressInput').value
+function onSearch() {
+    const search = document.getElementById('addressInput').value
     onGetLocation(search)
 }
 
@@ -92,11 +92,22 @@ function onCopyLocation() {
     document.execCommand('copy');
 }
 
-function onGetLocation(locationName='Israel'){
-    const locURL=`https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA`
+function onGetLocation(locationName = 'Israel') {
+    const locURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA`
     axios.get(locURL).then(res => {
-        mapService.addLocation(locationName,res.data.results[1].geometry.location.lat,res.data.results[1].geometry.location.lng)
-        mapService.panTo(res.data.results[1].geometry.location.lat,res.data.results[1].geometry.location.lng)
-        storageService.save(STORAGE_KEY,gLocations)
-    })  
+        mapService.addLocation(locationName, res.data.results[1].geometry.location.lat, res.data.results[1].geometry.location.lng)
+        mapService.panTo(res.data.results[1].geometry.location.lat, res.data.results[1].geometry.location.lng)
+        storageService.save(STORAGE_KEY, gLocations)
+    })
+}
+
+function updateURLParams(filterBy) {
+    const currentParams = new URLSearchParams(window.location.search)
+    currentParams.set('searchTerm', filterBy.searchTerm)
+    currentParams.set('minRate', filterBy.minRate)
+    currentParams.set('minPrice', filterBy.minPrice)
+    const lang = currentParams.get('lang')
+    if (lang) currentParams.set('lang', lang)
+    const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${currentParams.toString()}`
+    window.history.pushState({ path: newUrl }, '', newUrl)
 }
