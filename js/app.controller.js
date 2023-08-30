@@ -15,6 +15,7 @@ window.onRemoveLocation = onRemoveLocation
 window.url='https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
 
 window.gMyLoc={}
+window.gMyLoc = {}
 
 function onInit() {
     mapService.initMap()
@@ -57,20 +58,20 @@ function onGetUserPos() {
         })
 }
 
-function onGoToLocation(id){
-    const locations=storageService.load(STORAGE_KEY)
-    mapService.initMap(locations[id-1].lat,locations[id-1].lng)
+function onGoToLocation(id) {
+    const locations = storageService.load(STORAGE_KEY)
+    mapService.initMap(locations[id - 1].lat, locations[id - 1].lng)
 }
 
-function onRemoveLocation(id){
-    const locations=storageService.load(STORAGE_KEY)
-    locations.splice(id-1,1)
+function onRemoveLocation(id) {
+    const locations = storageService.load(STORAGE_KEY)
+    locations.splice(id - 1, 1)
     mapService.renderPlaces(locations)
-    storageService.save(STORAGE_KEY,locations)
+    storageService.save(STORAGE_KEY, locations)
 }
 
 function onGoToUserPos() {
-    mapService.initMap(gMyLoc.lat,gMyLoc.lng)
+    mapService.initMap(gMyLoc.lat, gMyLoc.lng)
 }
 
 function onPanTo() {
