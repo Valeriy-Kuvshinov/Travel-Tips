@@ -1,3 +1,5 @@
+import {storageService} from './storage.service.js'
+
 export const mapService = {
     initMap,
     addMarker,
@@ -7,6 +9,8 @@ export const mapService = {
 
 // Var that is used throughout this Module (not global)
 var gMap
+const STORAGE_KEY='locations'
+var gLocations=storageService.load(STORAGE_KEY) || []
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap')
@@ -18,7 +22,14 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
-            console.log('Map!', gMap)
+            gMap.addListener('click', ev => {
+                const name = prompt('Place name?', 'Place 1')
+                const lat = ev.latLng.lat()
+                const lng = ev.latLng.lng()
+                console.log(lat, lng)
+                addLocation(name, lat, lng, gMap.getZoom())
+                // renderPlaces()
+            })
         })
 }
 
@@ -29,6 +40,12 @@ function addMarker(loc) {
         title: 'Hello World!'
     })
     return marker
+}
+
+function addLocation(name,lat,lng){
+    var location={id:1,name,lat,lng,createdAt:Date.now(),updatedAt:Date.now()}
+    gLocations.push(location)
+    storageService.save(STORAGE_KEY,gLocations)
 }
 
 function panTo(lat, lng) {
