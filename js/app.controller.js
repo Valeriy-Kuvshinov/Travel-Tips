@@ -10,8 +10,7 @@ window.onGetUserPos = onGetUserPos
 window.onGoToUserPos = onGoToUserPos
 window.onGoToLocation = onGoToLocation
 window.onRemoveLocation = onRemoveLocation
-
-window.gMyLoc={}
+window.gMyLoc = {}
 
 function onInit() {
     mapService.initMap()
@@ -54,20 +53,20 @@ function onGetUserPos() {
         })
 }
 
-function onGoToLocation(id){
-    const locations=storageService.load(STORAGE_KEY)
-    mapService.initMap(locations[id-1].lat,locations[id-1].lng)
+function onGoToLocation(id) {
+    const locations = storageService.load(STORAGE_KEY)
+    mapService.initMap(locations[id - 1].lat, locations[id - 1].lng)
 }
 
-function onRemoveLocation(id){
-    const locations=storageService.load(STORAGE_KEY)
-    locations.splice(id-1,1)
+function onRemoveLocation(id) {
+    const locations = storageService.load(STORAGE_KEY)
+    locations.splice(id - 1, 1)
     mapService.renderPlaces(locations)
-    storageService.save(STORAGE_KEY,locations)
+    storageService.save(STORAGE_KEY, locations)
 }
 
 function onGoToUserPos() {
-    mapService.initMap(gMyLoc.lat,gMyLoc.lng)
+    mapService.initMap(gMyLoc.lat, gMyLoc.lng)
 }
 
 function onPanTo() {
@@ -75,7 +74,7 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917)
 }
 
-function updateUserPos(lat,lng){
-   gMyLoc.lat=lat
-   gMyLoc.lng=lng
+function updateUserPos(lat, lng) {
+    gMyLoc.lat = lat
+    gMyLoc.lng = lng
 }
