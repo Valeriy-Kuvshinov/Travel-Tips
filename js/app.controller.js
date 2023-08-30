@@ -46,57 +46,18 @@ function onInit() {
             })
     }
 
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         renderPlaces(gLocations)
     })
 }
 
-// function renderPlaces(locations) {
-//     const elLocationsList = document.querySelector('.locs')
-//     let strHTML = `
-//         <table>
-//             <thead>
-//                 <tr>
-//                     <th>ID</th>
-//                     <th>Name</th>
-//                     <th>Latitude</th>
-//                     <th>Longitude</th>
-//                     <th>Last Updated</th>
-//                     <th>Actions</th>
-//                 </tr>
-//             </thead>
-//             <tbody>
-//     `
-//     locations.forEach(location => {
-//         strHTML += `
-//             <tr>
-//                 <td>${location.id}</td>
-//                 <td>${location.name}</td>
-//                 <td>${location.lat}</td>
-//                 <td>${location.lng}</td>
-//                 <td>${location.updatedAt}</td>
-//                 <td>
-//                     <div class="action-buttons">
-//                         <button class="go-button" onclick="onGoToLocation(${location.id})"><i class="fa-solid fa-magnifying-glass-location"></i></button>
-//                         <button class="x-button" onclick="onRemoveLocation(${location.id})"><i class="fa-solid fa-xmark"></i></button>
-//                     </div>
-//                 </td>
-//             </tr>
-//         `
-//     })
-//     strHTML += `
-//             </tbody>
-//         </table>
-//     `
-//     elLocationsList.innerHTML = strHTML
-// }
 function renderPlaces(locations) {
-    const elLocationsList = document.querySelector('.locs');
+    const elLocationsList = document.querySelector('.locs')
 
     if (window.innerWidth <= 360) {
-        renderAsCards(locations, elLocationsList);
+        renderAsCards(locations, elLocationsList)
     } else {
-        renderAsTable(locations, elLocationsList);
+        renderAsTable(locations, elLocationsList)
     }
 }
 
@@ -114,7 +75,7 @@ function renderAsTable(locations, containerElement) {
                 </tr>
             </thead>
             <tbody>
-    `;
+    `
     locations.forEach(location => {
         strHTML += `
             <tr>
@@ -130,17 +91,17 @@ function renderAsTable(locations, containerElement) {
                     </div>
                 </td>
             </tr>
-        `;
-    });
+        `
+    })
     strHTML += `
             </tbody>
         </table>
-    `;
-    containerElement.innerHTML = strHTML;
+    `
+    containerElement.innerHTML = strHTML
 }
 
 function renderAsCards(locations, containerElement) {
-    let strHTML = '<div class="card-container">';
+    let strHTML = '<div class="card-container">'
     locations.forEach(location => {
         strHTML += `
             <div class="card">
@@ -154,10 +115,10 @@ function renderAsCards(locations, containerElement) {
                     <button class="x-button" onclick="onRemoveLocation(${location.id})"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
-        `;
-    });
-    strHTML += '</div>';
-    containerElement.innerHTML = strHTML;
+        `
+    })
+    strHTML += '</div>'
+    containerElement.innerHTML = strHTML
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
