@@ -11,6 +11,8 @@ window.onGoToUserPos = onGoToUserPos
 window.onGoToLocation = onGoToLocation
 window.onRemoveLocation = onRemoveLocation
 
+window.url='https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
+
 window.gMyLoc={}
 
 function onInit() {
@@ -75,7 +77,6 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917)
 }
 
-function updateUserPos(lat,lng){
-   gMyLoc.lat=lat
-   gMyLoc.lng=lng
+function gotoisrael(){
+    //'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
 }
