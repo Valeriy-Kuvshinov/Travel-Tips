@@ -131,6 +131,7 @@ table {
 
 /* =============================================================== */
 
+
 body {
     background-color: lightblue;
     font-family: Arial, Helvetica, sans-serif;
@@ -189,7 +190,7 @@ header h1 {
     padding: 10px;
 }
 
-#addressInput{
+#addressInput {
     padding: 10px;
 }
 
