@@ -70,17 +70,6 @@ function onGoToUserPos() {
     mapService.initMap(gMyLoc.lat,gMyLoc.lng)
 }
 
-function onGoToLocation(id) {
-    initMap(gLocations[id - 1].lat, gLocations[id - 1].lng)
-}
-
-function onRemoveLocation(id) {
-    gLocations.splice(id - 1, 1)
-    console.log(gLocations)
-    renderPlaces(gLocations)
-    storageService.save(STORAGE_KEY, gLocations)
-}
-
 function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
