@@ -1,4 +1,4 @@
-import {storageService} from './storage.service.js'
+import { storageService } from './storage.service.js'
 
 export const mapService = {
     initMap,
@@ -10,8 +10,8 @@ window.onGoToLocation = onGoToLocation
 
 // Var that is used throughout this Module (not global)
 var gMap
-const STORAGE_KEY='locations'
-var gLocations=storageService.load(STORAGE_KEY) || []
+const STORAGE_KEY = 'locations'
+var gLocations = storageService.load(STORAGE_KEY) || []
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap')
@@ -43,23 +43,48 @@ function addMarker(loc) {
     return marker
 }
 
-function addLocation(name,lat,lng){
-    var location={id:gLocations.length+1,name,lat,lng,createdAt:Date.now(),updatedAt:Date.now()}
+function addLocation(name, lat, lng) {
+    var location = { id: gLocations.length + 1, name, lat, lng, createdAt: Date.now(), updatedAt: Date.now() }
     gLocations.push(location)
-    storageService.save(STORAGE_KEY,gLocations)
+    storageService.save(STORAGE_KEY, gLocations)
 }
 
-function renderPlaces(locations){
-    const elLocationsList=document.querySelector('.locs')
-    var strHTML=locations.map(location => {
-        return `<p class="locationId">id:${location.id}</p>
-                <p class="locationName">name:${location.name}</p>
-                <p class="locationPos">lat:${location.lat},lng:${location.lng}</p>
-                <p class="locationUpdateTime">${location.updatedAt}</p>
-                <button onclick="onGoToLocation(${location.id})">Go</button>
-                <button onclick="onRemoveLocation(${location.id})">Remove</button>`
+function renderPlaces(locations) {
+    const elLocationsList = document.querySelector('.locs')
+    var strHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    `
+    locations.forEach(location => {
+        strHTML += `
+            <tr>
+                <td>${location.id}</td>
+                <td>${location.name}</td>
+                <td>${location.lat}</td>
+                <td>${location.lng}</td>
+                <td>${location.updatedAt}</td>
+                <td>
+                    <button onclick="onGoToLocation(${location.id})">Go</button>
+                    <button onclick="onRemoveLocation(${location.id})">Remove</button>
+                </td>
+            </tr>
+        `
     })
-    elLocationsList.innerHTML=strHTML
+    strHTML += `
+            </tbody>
+        </table>
+    `
+    elLocationsList.innerHTML = strHTML
 }
 
 function onGoToLocation(id){

@@ -131,14 +131,62 @@ table {
 
 /* =============================================================== */
 
-body{
+body {
     background-color: lightblue;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
 }
 
-button{
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#map {
+    margin: 20px 0;
+}
+
+.map-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.map-buttons button {
+    margin: 0 10px;
+    padding: 10px 20px;
     cursor: pointer;
-    padding: 5px;
-    background-color: wheat;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.map-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.user-pos,
+.locs {
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
 }
