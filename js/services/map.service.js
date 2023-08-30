@@ -6,6 +6,7 @@ export const mapService = {
     panTo
 }
 
+window.onGoToLocation = onGoToLocation
 
 // Var that is used throughout this Module (not global)
 var gMap
@@ -61,6 +62,9 @@ function renderPlaces(locations){
     elLocationsList.innerHTML=strHTML
 }
 
+function onGoToLocation(id){
+    console.log(gLocations[id-1])
+}
 function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng)
     gMap.panTo(laLatLng)
