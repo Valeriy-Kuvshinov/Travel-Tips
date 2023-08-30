@@ -17,7 +17,6 @@ window.onCopyLocation = onCopyLocation
 window.url = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyC7kbcv3mlfnqs-Miz4tMbqXbrMhvdwWzA'
 
 window.gMyLoc = {}
-window.gMyLoc = {}
 
 function onInit() {
     mapService.initMap()
