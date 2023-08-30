@@ -119,7 +119,7 @@ function onCopyLocation() {
 }
 
 function getShareableLink(lat, lng) {
-    const baseUrl = 'http://127.0.0.1:5500/index.html'
+    const baseUrl = 'https://valeriy-kuvshinov.github.io/Travel-Tips/'
     return `${baseUrl}?lat=${lat}&lng=${lng}`
 }
 
