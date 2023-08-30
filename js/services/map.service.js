@@ -49,7 +49,7 @@ function addLocation(name, lat, lng) {
 
 function renderPlaces(locations) {
     const elLocationsList = document.querySelector('.locs')
-    var strHTML = `
+    let strHTML = `
         <table>
             <thead>
                 <tr>
@@ -72,8 +72,8 @@ function renderPlaces(locations) {
                 <td>${location.lng}</td>
                 <td>${location.updatedAt}</td>
                 <td>
-                    <button onclick="onGoToLocation(${location.id})">Go</button>
-                    <button onclick="onRemoveLocation(${location.id})">Remove</button>
+                    <button class="go-button" onclick="onGoToLocation(${location.id})">Go</button>
+                    <button class="x-button" onclick="onRemoveLocation(${location.id})">X</button>
                 </td>
             </tr>
         `
@@ -84,7 +84,6 @@ function renderPlaces(locations) {
     `
     elLocationsList.innerHTML = strHTML
 }
-
 
 function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng)
