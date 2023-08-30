@@ -1,11 +1,11 @@
 import { storageService } from './storage.service.js'
+import { renderService } from '../app.controller.js'
 
 export const mapService = {
     initMap,
     addMarker,
     panTo,
-    addLocation,
-    renderPlaces
+    addLocation
 }
 
 // Var that is used throughout this Module (not global)
@@ -15,7 +15,7 @@ window.gLocations = storageService.load(STORAGE_KEY) || []
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     navigator.geolocation.getCurrentPosition(showLocation, handleLocationError)
-    renderPlaces(gLocations)
+    renderService.renderPlaces(gLocations)
     return _connectGoogleApi()
         .then(() => {
             console.log('google available')
@@ -32,7 +32,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 const lng = ev.latLng.lng()
                 addLocation(name, lat, lng, gMap.getZoom())
                 addMarker(name, lat, lng)
-                renderPlaces(gLocations)
+                renderService.renderPlaces(gLocations)
             })
         })
 }
@@ -71,52 +71,12 @@ function addMarker(name = 'hello world', lat, lng) {
 function addLocation(name, lat, lng) {
     var location = createLocation(name, lat, lng)
     gLocations.push(location)
-    renderPlaces(gLocations)
+    renderService.renderPlaces(gLocations)
     storageService.save(STORAGE_KEY, gLocations)
 }
 
 function createLocation(name, lat, lng) {
     return { id: gLocations.length + 1, name, lat, lng, createdAt: Date.now(), updatedAt: Date.now() }
-}
-
-function renderPlaces(locations) {
-    const elLocationsList = document.querySelector('.locs')
-    let strHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Last Updated</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-    `
-    locations.forEach(location => {
-        strHTML += `
-            <tr>
-                <td>${location.id}</td>
-                <td>${location.name}</td>
-                <td>${location.lat}</td>
-                <td>${location.lng}</td>
-                <td>${location.updatedAt}</td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="go-button" onclick="onGoToLocation(${location.id})"><i class="fa-solid fa-magnifying-glass-location"></i></button>
-                        <button class="x-button" onclick="onRemoveLocation(${location.id})"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                </td>
-            </tr>
-        `
-    })
-    strHTML += `
-            </tbody>
-        </table>
-    `
-    elLocationsList.innerHTML = strHTML
 }
 
 function panTo(lat, lng) {

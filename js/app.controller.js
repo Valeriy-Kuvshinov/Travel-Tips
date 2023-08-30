@@ -2,6 +2,10 @@ import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 import { storageService } from './services/storage.service.js'
 
+export const renderService = {
+    renderPlaces
+}
+
 window.onload = onInit
 window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
@@ -41,6 +45,119 @@ function onInit() {
                 console.log('Error: cannot init map at default location')
             })
     }
+
+    window.addEventListener('resize', function() {
+        renderPlaces(gLocations)
+    })
+}
+
+// function renderPlaces(locations) {
+//     const elLocationsList = document.querySelector('.locs')
+//     let strHTML = `
+//         <table>
+//             <thead>
+//                 <tr>
+//                     <th>ID</th>
+//                     <th>Name</th>
+//                     <th>Latitude</th>
+//                     <th>Longitude</th>
+//                     <th>Last Updated</th>
+//                     <th>Actions</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//     `
+//     locations.forEach(location => {
+//         strHTML += `
+//             <tr>
+//                 <td>${location.id}</td>
+//                 <td>${location.name}</td>
+//                 <td>${location.lat}</td>
+//                 <td>${location.lng}</td>
+//                 <td>${location.updatedAt}</td>
+//                 <td>
+//                     <div class="action-buttons">
+//                         <button class="go-button" onclick="onGoToLocation(${location.id})"><i class="fa-solid fa-magnifying-glass-location"></i></button>
+//                         <button class="x-button" onclick="onRemoveLocation(${location.id})"><i class="fa-solid fa-xmark"></i></button>
+//                     </div>
+//                 </td>
+//             </tr>
+//         `
+//     })
+//     strHTML += `
+//             </tbody>
+//         </table>
+//     `
+//     elLocationsList.innerHTML = strHTML
+// }
+function renderPlaces(locations) {
+    const elLocationsList = document.querySelector('.locs');
+
+    if (window.innerWidth <= 360) {
+        renderAsCards(locations, elLocationsList);
+    } else {
+        renderAsTable(locations, elLocationsList);
+    }
+}
+
+function renderAsTable(locations, containerElement) {
+    let strHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    locations.forEach(location => {
+        strHTML += `
+            <tr>
+                <td>${location.id}</td>
+                <td>${location.name}</td>
+                <td>${location.lat}</td>
+                <td>${location.lng}</td>
+                <td>${location.updatedAt}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="go-button" onclick="onGoToLocation(${location.id})"><i class="fa-solid fa-magnifying-glass-location"></i></button>
+                        <button class="x-button" onclick="onRemoveLocation(${location.id})"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    strHTML += `
+            </tbody>
+        </table>
+    `;
+    containerElement.innerHTML = strHTML;
+}
+
+function renderAsCards(locations, containerElement) {
+    let strHTML = '<div class="card-container">';
+    locations.forEach(location => {
+        strHTML += `
+            <div class="card">
+                <h3>${location.name}</h3>
+                <p>ID: ${location.id}</p>
+                <p>Latitude: ${location.lat}</p>
+                <p>Longitude: ${location.lng}</p>
+                <p>Last Updated: ${location.updatedAt}</p>
+                <div class="action-buttons">
+                    <button class="go-button" onclick="onGoToLocation(${location.id})"><i class="fa-solid fa-magnifying-glass-location"></i></button>
+                    <button class="x-button" onclick="onRemoveLocation(${location.id})"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+        `;
+    });
+    strHTML += '</div>';
+    containerElement.innerHTML = strHTML;
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -84,7 +201,7 @@ function onGoToLocation(id) {
 function onRemoveLocation(id) {
     const index = gLocations.findIndex(locId => locId === id)
     gLocations.splice(index, 1)
-    mapService.renderPlaces(gLocations)
+    renderPlaces(gLocations)
     storageService.save(STORAGE_KEY, gLocations)
 }
 
