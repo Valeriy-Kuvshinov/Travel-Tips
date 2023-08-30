@@ -51,7 +51,7 @@ function addLocation(name, lat, lng) {
 
 function renderPlaces(locations) {
     const elLocationsList = document.querySelector('.locs')
-    var strHTML = `
+    let strHTML = `
         <table>
             <thead>
                 <tr>
@@ -74,8 +74,8 @@ function renderPlaces(locations) {
                 <td>${location.lng}</td>
                 <td>${location.updatedAt}</td>
                 <td>
-                    <button onclick="onGoToLocation(${location.id})">Go</button>
-                    <button onclick="onRemoveLocation(${location.id})">Remove</button>
+                    <button class="go-button" onclick="onGoToLocation(${location.id})">Go</button>
+                    <button class="x-button" onclick="onRemoveLocation(${location.id})">X</button>
                 </td>
             </tr>
         `
@@ -87,15 +87,15 @@ function renderPlaces(locations) {
     elLocationsList.innerHTML = strHTML
 }
 
-function onGoToLocation(id){
-    initMap(gLocations[id-1].lat,gLocations[id-1].lng)
+function onGoToLocation(id) {
+    initMap(gLocations[id - 1].lat, gLocations[id - 1].lng)
 }
 
-function onRemoveLocation(id){
-    gLocations.splice(id-1,1)
+function onRemoveLocation(id) {
+    gLocations.splice(id - 1, 1)
     console.log(gLocations)
     renderPlaces(gLocations)
-    storageService.save(STORAGE_KEY,gLocations)
+    storageService.save(STORAGE_KEY, gLocations)
 }
 
 function panTo(lat, lng) {
