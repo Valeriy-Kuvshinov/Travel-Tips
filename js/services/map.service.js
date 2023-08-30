@@ -7,6 +7,7 @@ export const mapService = {
 }
 
 window.onGoToLocation = onGoToLocation
+window.onRemoveLocation = onRemoveLocation
 
 // Var that is used throughout this Module (not global)
 var gMap
@@ -14,7 +15,6 @@ const STORAGE_KEY = 'locations'
 var gLocations = storageService.load(STORAGE_KEY) || []
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
-    console.log('InitMap')
     renderPlaces(gLocations)
     return _connectGoogleApi()
         .then(() => {
@@ -88,8 +88,16 @@ function renderPlaces(locations) {
 }
 
 function onGoToLocation(id){
-    console.log(gLocations[id-1])
+    initMap(gLocations[id-1].lat,gLocations[id-1].lng)
 }
+
+function onRemoveLocation(id){
+    gLocations.splice(id-1,1)
+    console.log(gLocations)
+    renderPlaces(gLocations)
+    storageService.save(STORAGE_KEY,gLocations)
+}
+
 function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng)
     gMap.panTo(laLatLng)
