@@ -68,6 +68,7 @@ function onGetUserPos() {
     getPosition()
         .then(pos => {
             console.log('User position is:', pos.coords)
+            gMyLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude }
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
         })
@@ -102,20 +103,14 @@ function onSearch() {
 }
 
 function onCopyLocation() {
-    const gMap = mapService.getMap()
-
-    const center = gMap.getCenter()
-    const lat = center.lat()
-    const lng = center.lng()
-
-    const url = getShareableLink(lat, lng)
-    console.log(lat, lng)
-
-    navigator.clipboard.writeText(url).then(() => {
-        console.log('Link copied to clipboard')
-    }).catch(err => {
-        console.log('Failed to copy link: ', err)
-    })
+    if (gMyLoc && gMyLoc.lat && gMyLoc.lng) {
+        const url = getShareableLink(gMyLoc.lat, gMyLoc.lng)
+        navigator.clipboard.writeText(url).then(() => {
+            console.log('Link copied to clipboard')
+        }).catch(err => {
+            console.log('Failed to copy location: ', err)
+        })
+    }
 }
 
 function getShareableLink(lat, lng) {
@@ -136,8 +131,4 @@ function updateURLParams() {
     const currentParams = new URLSearchParams(window.location.search)
     currentParams.set('lng', gLocations.lng)
     currentParams.set('lat', gLocations.lat)
-    // const lang = currentParams.get('lang')
-    // if (lang) currentParams.set('lang', lang)
-    // const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${currentParams.toString()}`
-    // window.history.pushState({ path: newUrl }, '', newUrl)
 }

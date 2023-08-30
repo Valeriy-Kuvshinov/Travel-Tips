@@ -5,8 +5,7 @@ export const mapService = {
     addMarker,
     panTo,
     addLocation,
-    renderPlaces,
-    getMap: () => gMap
+    renderPlaces
 }
 
 // Var that is used throughout this Module (not global)
