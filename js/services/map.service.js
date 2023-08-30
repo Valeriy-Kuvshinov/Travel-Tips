@@ -3,7 +3,8 @@ import { storageService } from './storage.service.js'
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    addLocation
 }
 
 // Var that is used throughout this Module (not global)
